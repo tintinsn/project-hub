@@ -30,7 +30,6 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
     setIsLoading(true);
     if (!isSignIn) {
       axios
@@ -83,7 +82,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
               <InputAuth
                 id="name"
                 label="name"
-                //   disabled={isLoading}
+                disabled={isLoading}
                 register={register}
                 errors={errors}
               />
@@ -91,7 +90,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
             <InputAuth
               id="email"
               label="Email"
-              // disabled={isLoading}
+              disabled={isLoading}
               register={register}
               errors={errors}
             />
@@ -99,7 +98,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
               id="password"
               label="Password"
               type="password"
-              // disabled={isLoading}
+              disabled={isLoading}
               register={register}
               errors={errors}
             />

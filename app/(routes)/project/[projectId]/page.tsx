@@ -1,14 +1,12 @@
 import getProject from "@/app/actions/get-project";
 import getUser from "@/app/actions/get-user";
-import useUpdateModal from "@/app/hooks/useUpdateModal";
 import DeleteButton from "@/components/delete-button";
 import EditButton from "@/components/edit-button";
 import UpdateModal from "@/components/modal/update-modal";
-import Button from "@/components/ui/button";
+import Avatar from "@/components/ui/avatar";
 import Container from "@/components/ui/container";
 import { GeistSans } from "geist/font/sans";
 import Image from "next/image";
-import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { RxGithubLogo } from "react-icons/rx";
 import StackIcon from "tech-stack-icons";
@@ -20,6 +18,7 @@ interface ParamsProps {
 const ProjectPage = async ({ params }: ParamsProps) => {
   const project = await getProject(params.projectId);
   const user = await getUser();
+  console.log(user);
 
   const owner = project?.createdBy.id === user?.id;
 
@@ -78,14 +77,7 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                   </span>
                 </div>
                 {project.createdBy.image && (
-                  <div className="relative h-9 w-9 cursor-pointer rounded-full border border-gray-200 bg-white">
-                    <Image
-                      src={project.createdBy.image}
-                      alt="image owner"
-                      fill
-                      className="absolute"
-                    />
-                  </div>
+                  <Avatar size="lg" imageUrl={project.createdBy.image} />
                 )}
               </div>
               <p className="block max-w-full text-base leading-6 text-[#888]">

@@ -1,15 +1,16 @@
+"use client";
 import { Project } from "@/types";
 import Image from "next/image";
 
 import { FiExternalLink } from "react-icons/fi";
 import StackIcon from "tech-stack-icons";
+import Avatar from "./avatar";
 
 interface ProjectCardProps {
   data: Project;
 }
 
 const ProjectCard = ({ data }: ProjectCardProps) => {
-  console.log(data);
   return (
     <div className="group relative m-auto h-full w-full">
       <div
@@ -31,7 +32,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
           <div className="iframe-container-parent relative h-[200px] w-full lg:w-full">
             <div className="iframe-container h-[400px] w-[200%] origin-top-left scale-50 transform overflow-hidden rounded-lg">
               <iframe
-                src={data?.projectUrl ?? ''}
+                src={data?.projectUrl ?? ""}
                 className="h-full w-full overflow-scroll"
               ></iframe>
             </div>
@@ -71,11 +72,13 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
               ))}
             </div>
             <div className="flex items-center justify-between">
-              <p className="mx-0 my-4 block text-sm leading-5 tracking-[-.01em] text-[#888]">
-                by {data.createdBy.name}
-              </p>
+              <div className="mx-0 my-4 flex items-center gap-2 text-sm leading-5 tracking-[-.01em] text-[#888]">
+                <span>by</span>
+                <span> {data.createdBy.name}</span>
+                <Avatar size="lg" imageUrl={data.createdBy.image} />
+              </div>
               {/* dark:text-[#444] */}
-              <button className="border-0 bg-none text-[#999]">
+              <button className="border-0 bg-none text-[#444]">
                 <FiExternalLink className="h-5 w-5 text-current transition-all duration-100 ease-linear hover:text-[#111]" />
               </button>
             </div>

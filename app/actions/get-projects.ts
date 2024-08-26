@@ -19,6 +19,7 @@ const getProjects = async () => {
             id: true,
             name: true,
             email: true,
+            image: true,
           },
         },
       },

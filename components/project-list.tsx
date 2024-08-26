@@ -10,6 +10,7 @@ import getProjects from "@/app/actions/get-projects";
 
 const ProjectList = async () => {
   const projects = await getProjects();
+  console.log(projects)
 
   return (
     <div className="flex flex-col space-y-10">

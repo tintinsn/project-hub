@@ -10,10 +10,9 @@ export interface Project {
   createdAt: Date;
   updatedAt: Date;
   createdBy: {
-      id: string;
-      name: string | null;
-      email: string | null;
-  }
+    id: string;
+    name: string | null;
+    email: string | null;
+    image: string | null;
+  };
 }
-
-

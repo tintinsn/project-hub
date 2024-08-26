@@ -13,7 +13,6 @@ body {
   background: linear-gradient(to right, #f83600, #fe8c00); */
   /* background: black; */
   /* color: white; */
- 
 }
 /* body::before {
   --size: 30px;
@@ -44,4 +43,13 @@ main {
 }
 [aria-pressed="false"] path:nth-of-type(2) {
   display: none;
+}
+
+@layer utilities {
+  .shadow-custom {
+    box-shadow:
+      1px 0px 0px rgba(0, 0, 0, 0.1),
+      -1px -1px 0px rgba(0, 0, 0, 0.1),
+      0px -1px 0px rgba(0, 0, 0, 0.1);
+  }
 }

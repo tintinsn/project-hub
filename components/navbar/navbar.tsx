@@ -74,7 +74,7 @@ const Navbar = ({ user }: NavbarProps) => {
             <LinkButton href="/create" label="Create Project" rounded="full" />
             {user ? (
               <label htmlFor="toggle_nav" className="cursor-pointer">
-                <Avatar imageUrl={user?.image} />
+                <Avatar size="lg" imageUrl={user?.image} />
               </label>
             ) : (
               <MobileNavButton />
@@ -140,4 +140,3 @@ const Navbar = ({ user }: NavbarProps) => {
 };
 
 export default Navbar;
-

@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 
 export async function uploadImage(image: File): Promise<string> {

@@ -20,6 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await getUser();
+  console.log(user);
   return (
     <html lang="en">
       <body className={urbanist.className}>
