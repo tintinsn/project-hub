@@ -29,7 +29,7 @@ const ProjectPage = async ({ params }: ParamsProps) => {
   return (
     <Container>
       <div className="mx-auto max-w-full">
-        <div className="flex flex-wrap px-4 py-16 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap px-4 py-4 sm:px-6 lg:px-8 lg:py-16">
           {/* *********** Left content - START ************ */}
           <div className="iframe-container-parent relative h-[400px] w-full px-6 lg:w-1/2">
             <div className="iframe-container h-[800px] w-[200%] origin-top-left scale-50 transform overflow-hidden rounded-lg">
@@ -43,7 +43,7 @@ const ProjectPage = async ({ params }: ParamsProps) => {
           <div className="w-full bg-white p-4 md:w-full lg:w-1/2">
             <div className="flex flex-col gap-5">
               <div className="flex justify-between">
-                <h1 className="text-3xl font-semibold text-black">
+                <h1 className="text-xl font-semibold text-black lg:text-3xl">
                   {project?.title}
                 </h1>
                 <div className="flex gap-2">
@@ -94,12 +94,12 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                 <a
                   href={project?.projectUrl ?? ""}
                   target="_blank"
-                  className="flex h-[32px] gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
+                  className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
                 >
-                  <span className="flex items-center justify-start gap-[6px] px-[6px]">
+                  <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
                     <RiExternalLinkLine className="h-4 w-4 fill-black" />
                     <span
-                      className={`${GeistSans.className} text-sm font-medium`}
+                      className={`${GeistSans.className} truncate text-[10px] font-medium md:text-sm`}
                     >
                       {project?.title}
                     </span>
@@ -107,13 +107,13 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                 </a>
                 <a
                   href={project?.githubRepoUrl ?? ""}
-                  className="flex h-[32px] gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
+                  className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
                 >
-                  <span className="flex items-center justify-start gap-[6px] px-[6px]">
+                  <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
                     <RxGithubLogo className="h-4 w-4 fill-black" />
 
                     <span
-                      className={`${GeistSans.className} text-sm font-medium`}
+                      className={`${GeistSans.className} truncate text-[10px] font-medium md:text-sm`}
                     >
                       {repoName}
                     </span>

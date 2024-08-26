@@ -1,16 +1,13 @@
+import getProjects from "@/app/actions/get-projects";
 import NoResults from "@/components/ui/no-results";
 import ProjectCard from "@/components/ui/project-card";
-import { Project } from "@/types";
 import Link from "next/link";
 import { HiFolderPlus } from "react-icons/hi2";
 import LinkButton from "./ui/link-button";
-import getProjects from "@/app/actions/get-projects";
-
-
 
 const ProjectList = async () => {
   const projects = await getProjects();
-  console.log(projects)
+  console.log(projects);
 
   return (
     <div className="flex flex-col space-y-10">
@@ -27,7 +24,7 @@ const ProjectList = async () => {
       </div>
 
       {projects?.length === 0 && <NoResults />}
-      <div className="grid max-w-full grid-cols-1 gap-20 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid max-w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16 ">
         {projects?.map((project) => (
           <Link href={`/project/${project.id}`} key={project.id}>
             <ProjectCard data={project} />

@@ -5,15 +5,14 @@ import Heading from "../heading";
 import Modal from "./modal";
 
 import useUpdateModal from "@/app/hooks/useUpdateModal";
+import { Project } from "@/types";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { SelectedOption } from "../create-form";
 import Input from "../input";
 import InputFile from "../input-file";
 import InputTextarea from "../input-textarea";
 import MultiSelectTech from "../ui/multi-select";
-import { Project } from "@/types";
-import { technologies } from "@/const";
-import axios from "axios";
 
 interface UpdateModalProps {
   data: Project;
