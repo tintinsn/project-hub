@@ -97,9 +97,9 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                   className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
                 >
                   <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
-                    <RiExternalLinkLine className="h-4 w-4 fill-black" />
+                    <RiExternalLinkLine className="h-4 w-4 flex-shrink-0 fill-black" />
                     <span
-                      className={`${GeistSans.className} truncate text-[10px] font-medium md:text-sm`}
+                      className={`${GeistSans.className} truncate text-sm font-medium`}
                     >
                       {project?.title}
                     </span>
@@ -107,13 +107,13 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                 </a>
                 <a
                   href={project?.githubRepoUrl ?? ""}
-                  className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
+                  className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 lg:w-48"
                 >
                   <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
-                    <RxGithubLogo className="h-4 w-4 fill-black" />
+                    <RxGithubLogo className="h-4 w-4 flex-shrink-0 fill-black" />
 
                     <span
-                      className={`${GeistSans.className} truncate text-[10px] font-medium md:text-sm`}
+                      className={`${GeistSans.className} truncate text-sm font-medium`}
                     >
                       {repoName}
                     </span>
