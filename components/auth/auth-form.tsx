@@ -37,7 +37,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
         .post("/api/signup", data)
         .then(() => {
           toast.success("Create an account success");
-          router.push("/");
+          router.push("/signin");
         })
         .catch((error) => {
           toast.error("Someting Went Wrong");

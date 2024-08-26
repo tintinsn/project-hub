@@ -10,6 +10,7 @@ import MultiSelectTech from "@/components/ui/multi-select";
 import ProjectCard from "@/components/ui/project-card";
 import { User } from "@prisma/client";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -20,8 +21,8 @@ interface CreateFormProps {
 }
 
 export interface SelectedOption {
-  label: string;
   value: string;
+  label: string;
 }
 
 const initialData = {
@@ -38,6 +39,12 @@ const CreateForm = ({ user }: CreateFormProps) => {
   const [selectedTechStack, setSelectedTechStack] = useState<SelectedOption[]>(
     [],
   );
+  const router = useRouter();
+
+  if (!user) {
+    router.push("/signin");
+  }
+
   const {
     register,
     handleSubmit,
@@ -46,21 +53,6 @@ const CreateForm = ({ user }: CreateFormProps) => {
   } = useForm<FieldValues>({
     defaultValues: initialData,
   });
-
-  // const mockupData = [
-  //   {
-  //     id: "3",
-  //     name: "AI Chatbot",
-  //     authorName: "Alice Johnson",
-  //     authorAvatar: "https://example.com/avatars/alicejohnson.jpg",
-  //     description: "A full-featured, hackable Next.js AI chatbot.",
-  //     techStack: ["nextjs2", "reactjs", "tailwindcss", "mongodb"],
-  //     image: "https://picsum.photos/300/200?random=1",
-  //     projectTags: ["chatbot", "AI", "vercel"],
-  //     createdAt: new Date("2023-07-01"),
-  //     lastUpdated: new Date("2023-07-15"),
-  //   },
-  // ];
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     let imageUrl = data.imageUrl;
@@ -82,6 +74,7 @@ const CreateForm = ({ user }: CreateFormProps) => {
       const res = axios.post("/api/projects", inputData).then(() => {
         toast.success("Create new project successfully!");
         reset();
+        router.push("/");
       });
     } catch (error) {
       toast.error("Someting Went Wrong");
@@ -151,6 +144,7 @@ const CreateForm = ({ user }: CreateFormProps) => {
 
                   <MultiSelectTech
                     setSelectedTechStack={setSelectedTechStack}
+                    selectedTechStack={selectedTechStack}
                   />
                 </div>
                 <div className="sm:col-span-3">

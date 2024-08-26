@@ -31,7 +31,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
           <div className="iframe-container-parent relative h-[200px] w-full lg:w-full">
             <div className="iframe-container h-[400px] w-[200%] origin-top-left scale-50 transform overflow-hidden rounded-lg">
               <iframe
-                src={data?.projectUrl}
+                src={data?.projectUrl ?? ''}
                 className="h-full w-full overflow-scroll"
               ></iframe>
             </div>

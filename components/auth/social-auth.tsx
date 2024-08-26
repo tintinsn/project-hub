@@ -4,12 +4,19 @@ import { signIn } from "next-auth/react";
 import { AiFillGithub } from "react-icons/ai";
 
 const SocialAuth = () => {
+  const handleSigninGithub = () => {
+    signIn("github", { callbackUrl: "/" });
+  };
+  const handleSigninGoogle = () => {
+    signIn("google", { callbackUrl: "/" });
+  };
+
   return (
     <div className="flex w-full space-x-2">
       <Button
         icon={FcGoogle}
         label="Google"
-        onClick={() => signIn("google")}
+        onClick={handleSigninGoogle}
         variant="outline"
         size="lg"
         position="center"
@@ -18,7 +25,7 @@ const SocialAuth = () => {
       <Button
         icon={AiFillGithub}
         label="Github"
-        onClick={() => signIn("github")}
+        onClick={handleSigninGithub}
         variant="outline"
         size="lg"
         position="center"

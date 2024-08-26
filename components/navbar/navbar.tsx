@@ -38,11 +38,14 @@ const Navbar = ({ user }: NavbarProps) => {
   }, []);
 
   useEffect(() => {
-    // Clear the checkbox status when the pathname changes
     if (toggleNavRef.current) {
       toggleNavRef.current.checked = false;
     }
   }, [pathname]);
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/signin" });
+  };
 
   return (
     <nav
@@ -122,7 +125,7 @@ const Navbar = ({ user }: NavbarProps) => {
               <MenuList label="Home" href="/explore" icon={GoHome} />
               {user && (
                 <MenuList
-                  onClick={() => signOut()}
+                  onClick={handleSignOut}
                   label="Log out"
                   icon={MdLogout}
                 />
@@ -138,23 +141,3 @@ const Navbar = ({ user }: NavbarProps) => {
 
 export default Navbar;
 
-// const loginModal = useLoginModal();
-// const registerModal = useRegisterModal()
-
-{
-  /* <Button
-                onClick={loginModal.onOpen}
-                
-                label="Log in"
-                position="center"
-                size="lg"
-              />
-              <Button
-                onClick={registerModal.onOpen}
-                
-                label="Sign up"
-                position="center"
-                size="lg"
-                variant="outline"
-              /> */
-}

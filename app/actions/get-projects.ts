@@ -1,16 +1,16 @@
 import { getServerSession } from "next-auth";
-import { authOption } from "../api/auth/[...nextauth]/route";
+
 import prisma from "../libs/prismadb";
+import authOptions from "../libs/auth";
 
 export const getSession = async () => {
-  return await getServerSession(authOption);
+  return await getServerSession(authOptions);
 };
 
 const getProjects = async () => {
   try {
-    const session = await getSession();
-
-    if (!session?.user?.email) return null;
+    // const session = await getSession();
+    // if (!session?.user?.email) return null;
 
     const projects = await prisma.project.findMany({
       include: {

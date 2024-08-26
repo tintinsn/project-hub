@@ -6,11 +6,9 @@ import { HiFolderPlus } from "react-icons/hi2";
 import LinkButton from "./ui/link-button";
 import getProjects from "@/app/actions/get-projects";
 
-interface ProjectListProps {
-  items: Project[];
-}
 
-const ProjectList = async ({ items }: ProjectListProps) => {
+
+const ProjectList = async () => {
   const projects = await getProjects();
 
   return (

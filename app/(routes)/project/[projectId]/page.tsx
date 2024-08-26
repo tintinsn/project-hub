@@ -1,4 +1,5 @@
 import getProject from "@/app/actions/get-project";
+import getUser from "@/app/actions/get-user";
 import useUpdateModal from "@/app/hooks/useUpdateModal";
 import DeleteButton from "@/components/delete-button";
 import EditButton from "@/components/edit-button";
@@ -6,6 +7,7 @@ import UpdateModal from "@/components/modal/update-modal";
 import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import { GeistSans } from "geist/font/sans";
+import Image from "next/image";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { RxGithubLogo } from "react-icons/rx";
@@ -17,7 +19,14 @@ interface ParamsProps {
 
 const ProjectPage = async ({ params }: ParamsProps) => {
   const project = await getProject(params.projectId);
+  const user = await getUser();
 
+  const owner = project?.createdBy.id === user?.id;
+
+  if (!project) {
+    return <div>Project not found</div>;
+  }
+  const repoName = project.githubRepoUrl?.split("github.com/")[1];
   return (
     <Container>
       <div className="mx-auto max-w-full">
@@ -26,7 +35,7 @@ const ProjectPage = async ({ params }: ParamsProps) => {
           <div className="iframe-container-parent relative h-[400px] w-full px-6 lg:w-1/2">
             <div className="iframe-container h-[800px] w-[200%] origin-top-left scale-50 transform overflow-hidden rounded-lg">
               <iframe
-                src={project?.projectUrl}
+                src={project?.projectUrl ?? ""}
                 className="h-full w-full overflow-scroll"
               ></iframe>
             </div>
@@ -53,12 +62,31 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                     variant="danger"
                     rounded="full"
                   /> */}
-                  <EditButton />
-                  <DeleteButton projectId={params.projectId} />
+                  {owner && (
+                    <>
+                      <EditButton />
+                      <DeleteButton projectId={params.projectId} />
+                    </>
+                  )}
                 </div>
               </div>
-              <div className="flex">
-                <h3>by {project?.createdBy.name}</h3>
+              <div className="flex items-center gap-3">
+                <div className="font-medium">
+                  <span>by</span>
+                  <span className="ml-2 cursor-pointer hover:underline">
+                    {project?.createdBy.name}
+                  </span>
+                </div>
+                {project.createdBy.image && (
+                  <div className="relative h-9 w-9 cursor-pointer rounded-full border border-gray-200 bg-white">
+                    <Image
+                      src={project.createdBy.image}
+                      alt="image owner"
+                      fill
+                      className="absolute"
+                    />
+                  </div>
+                )}
               </div>
               <p className="block max-w-full text-base leading-6 text-[#888]">
                 {project?.description}
@@ -72,7 +100,7 @@ const ProjectPage = async ({ params }: ParamsProps) => {
               </div>
               <div className="flex w-fit gap-4">
                 <a
-                  href={project?.projectUrl}
+                  href={project?.projectUrl ?? ""}
                   target="_blank"
                   className="flex h-[32px] gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
                 >
@@ -81,12 +109,12 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                     <span
                       className={`${GeistSans.className} text-sm font-medium`}
                     >
-                      GameHub
+                      {project?.title}
                     </span>
                   </span>
                 </a>
                 <a
-                  href={project?.githubRepoUrl}
+                  href={project?.githubRepoUrl ?? ""}
                   className="flex h-[32px] gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
                 >
                   <span className="flex items-center justify-start gap-[6px] px-[6px]">
@@ -95,7 +123,7 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                     <span
                       className={`${GeistSans.className} text-sm font-medium`}
                     >
-                      tintinsn/Game-hub
+                      {repoName}
                     </span>
                   </span>
                 </a>
@@ -104,7 +132,7 @@ const ProjectPage = async ({ params }: ParamsProps) => {
           </div>
         </div>
       </div>
-      <UpdateModal />
+      <UpdateModal data={project} />
     </Container>
   );
 };

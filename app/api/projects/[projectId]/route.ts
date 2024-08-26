@@ -1,7 +1,9 @@
 import deleteProject from "@/app/actions/delete-project";
 import getProject from "@/app/actions/get-project";
+import updateProject from "@/app/actions/update-project";
 import prisma from "@/app/libs/prismadb";
-import { NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -48,5 +50,27 @@ export async function DELETE(
       { message: "Internal server error" },
       { status: 500 },
     );
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { projectId: string } },
+) {
+  console.log(params.projectId);
+  const { projectId } = params;
+  const updatedData = await request.json();
+  try {
+    const updatedProject = await updateProject(
+      projectId as string,
+      updatedData,
+    );
+
+    if (!updatedProject) {
+      return NextResponse.json({ error: "Project not found" }, { status: 400 });
+    }
+    return NextResponse.json(updatedProject, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: error }, { status: 405 });
   }
 }

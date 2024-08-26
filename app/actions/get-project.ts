@@ -1,16 +1,16 @@
 import { getServerSession } from "next-auth";
-import { authOption } from "../api/auth/[...nextauth]/route";
-import prisma from "../libs/prismadb";
 
+import prisma from "../libs/prismadb";
+import authOptions from "../libs/auth";
 export const getSession = async () => {
-  return await getServerSession(authOption);
+  return await getServerSession(authOptions);
 };
 
 const getProject = async (projectId: string) => {
   try {
-    const session = await getSession();
+    // const session = await getSession();
 
-    if (!session?.user?.email) return null;
+    // if (!session?.user?.email) return null;
 
     const project = await prisma.project.findUnique({
       where: {
@@ -22,6 +22,7 @@ const getProject = async (projectId: string) => {
             id: true,
             name: true,
             email: true,
+            image: true,
           },
         },
       },
