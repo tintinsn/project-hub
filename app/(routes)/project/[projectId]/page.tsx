@@ -18,7 +18,6 @@ interface ParamsProps {
 const ProjectPage = async ({ params }: ParamsProps) => {
   const project = await getProject(params.projectId);
   const user = await getUser();
-  console.log(user);
 
   const owner = project?.createdBy.id === user?.id;
 

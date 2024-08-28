@@ -57,7 +57,7 @@ const CreateForm = ({ user }: CreateFormProps) => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+    
     let imageUrl = data.imageUrl;
 
     if (imageUrl && imageUrl[0]) {

@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   // recieve request body from form
   try {
     const { email, name, password } = await request.json();
-    console.log("Received data:", { email, name, password }); // เพิ่มบรรทัดนี้
+    
 
     // Hash password ก่อนบันทึกลงฐานข้อมูล
     const hashedPassword = bcrypt.hashSync(password, 10);

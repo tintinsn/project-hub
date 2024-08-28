@@ -8,7 +8,7 @@ export const getSession = async () => {
 };
 
 const updateProject = async (projectId: string, updatedData: any) => {
-  console.log("update data =>" + updatedData);
+  
   try {
     const session = await getSession();
 

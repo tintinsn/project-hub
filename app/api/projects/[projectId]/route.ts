@@ -57,7 +57,6 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { projectId: string } },
 ) {
-  console.log(params.projectId);
   const { projectId } = params;
   const updatedData = await request.json();
   try {

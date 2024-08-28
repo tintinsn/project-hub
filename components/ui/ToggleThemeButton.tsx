@@ -5,7 +5,6 @@ const ToggleThemeButton = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-    console.log(isDarkMode);
     document.documentElement.setAttribute(
       "data-theme",
       isDarkMode ? "light" : "dark",
