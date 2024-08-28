@@ -63,6 +63,25 @@ const CreateForm = ({ user }: CreateFormProps) => {
     if (imageUrl && imageUrl[0]) {
       const file = imageUrl[0] as File;
       imageUrl = await uploadImage(file);
+    } else if (data.projectUrl) {
+      try {
+        const response = await axios.post("/api/screenshot", {
+          url: data.projectUrl,
+        });
+        const responseUrl = /'(.+)'/.exec(response.data.imageUrl);
+        if (responseUrl && responseUrl[1]) {
+          imageUrl = responseUrl[1];
+        } else {
+          throw new Error("Invalid screenshot URL");
+        }
+      } catch (error) {
+        console.error("Error generating screenshot:", error);
+        toast.error("Failed to generate project screenshot");
+        return;
+      }
+    } else if (data.githubRepoUrl) {
+      const repoName = data.githubRepoUrl?.split("github.com/")[1];
+      imageUrl = `https://opengraph.githubassets.com/1/${repoName}`;
     }
 
     const inputData = {
@@ -116,6 +135,7 @@ const CreateForm = ({ user }: CreateFormProps) => {
                     errors={errors}
                     disabled={isLoading}
                     placeholder="Project name"
+                    required
                   />
                 </div>
                 <div className="sm:col-span-3">
@@ -135,6 +155,7 @@ const CreateForm = ({ user }: CreateFormProps) => {
                     register={register}
                     disabled={isLoading}
                     errors={errors}
+                    required
                   />
                 </div>
                 <div className="sm:col-span-6">

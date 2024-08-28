@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import React from "react";
 import { IconType } from "react-icons";
 
+
 type ButtonVariant = "default" | "outline" | "danger";
 type ButtonRounded = "default" | "full";
 type ButtonPosition = "start" | "center" | "end";
@@ -65,6 +66,7 @@ const Button = ({
           className={`${GeistSans.className} flex items-center justify-start gap-[6px] px-[6px] font-light`}
         >
           {Icon && <Icon size={16} />}
+          
           {label}
         </span>
       </button>

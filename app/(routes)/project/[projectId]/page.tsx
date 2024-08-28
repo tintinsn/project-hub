@@ -26,18 +26,24 @@ const ProjectPage = async ({ params }: ParamsProps) => {
     return <div>Project not found</div>;
   }
   const repoName = project.githubRepoUrl?.split("github.com/")[1];
+  const ogGithubImage = `https://opengraph.githubassets.com/1/${repoName}`;
+
   return (
     <Container>
       <div className="mx-auto max-w-full">
         <div className="flex flex-wrap px-4 py-4 sm:px-6 lg:px-8 lg:py-16">
           {/* *********** Left content - START ************ */}
-          <div className="iframe-container-parent relative h-[400px] w-full px-6 lg:w-1/2">
-            <div className="iframe-container h-[800px] w-[200%] origin-top-left scale-50 transform overflow-hidden rounded-lg">
-              <iframe
-                src={project?.projectUrl ?? ""}
-                className="h-full w-full overflow-scroll"
-              ></iframe>
-            </div>
+          <div className="relative h-auto max-h-[400px] w-full overflow-hidden rounded-md border border-gray-200 lg:w-1/2">
+            <Image
+              src={project?.imageUrl ?? ""}
+              alt="Image"
+              width={500}
+              height={300}
+              style={{ width: "100%", height: "auto" }}
+              quality={100}
+              priority
+              className="rounded-md"
+            />
           </div>
           {/* *********** Right content - START ************ */}
           <div className="w-full bg-white p-4 md:w-full lg:w-1/2">
@@ -47,20 +53,6 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                   {project?.title}
                 </h1>
                 <div className="flex gap-2">
-                  {/* <Button
-                    onClick={() => updateModal.onOpen}
-                    label="Edit"
-                    icon={MdEdit}
-                    variant="outline"
-                    rounded="full"
-                  /> */}
-                  {/* <Button
-                    // onClick={() => handleDelete(params.projectId)}
-                    label="Delete"
-                    icon={MdDeleteForever}
-                    variant="danger"
-                    rounded="full"
-                  /> */}
                   {owner && (
                     <>
                       <EditButton />
@@ -91,34 +83,38 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                 ))}
               </div>
               <div className="flex w-fit gap-4">
-                <a
-                  href={project?.projectUrl ?? ""}
-                  target="_blank"
-                  className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
-                >
-                  <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
-                    <RiExternalLinkLine className="h-4 w-4 flex-shrink-0 fill-black" />
-                    <span
-                      className={`${GeistSans.className} truncate text-sm font-medium`}
-                    >
-                      {project?.title}
+                {project.projectUrl && (
+                  <a
+                    href={project?.projectUrl ?? ""}
+                    target="_blank"
+                    className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20"
+                  >
+                    <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
+                      <RiExternalLinkLine className="h-4 w-4 flex-shrink-0 fill-black" />
+                      <span
+                        className={`${GeistSans.className} truncate text-sm font-medium`}
+                      >
+                        {project?.title}
+                      </span>
                     </span>
-                  </span>
-                </a>
-                <a
-                  href={project?.githubRepoUrl ?? ""}
-                  className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 lg:w-48"
-                >
-                  <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
-                    <RxGithubLogo className="h-4 w-4 flex-shrink-0 fill-black" />
+                  </a>
+                )}
+                {project.githubRepoUrl && (
+                  <a
+                    href={project?.githubRepoUrl ?? ""}
+                    className="flex h-[32px] w-40 gap-1 rounded-full bg-[#F5F5F5] pl-2 pr-3 duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 lg:w-48"
+                  >
+                    <span className="flex items-center justify-start gap-[6px] overflow-hidden px-[6px]">
+                      <RxGithubLogo className="h-4 w-4 flex-shrink-0 fill-black" />
 
-                    <span
-                      className={`${GeistSans.className} truncate text-sm font-medium`}
-                    >
-                      {repoName}
+                      <span
+                        className={`${GeistSans.className} truncate text-sm font-medium`}
+                      >
+                        {repoName}
+                      </span>
                     </span>
-                  </span>
-                </a>
+                  </a>
+                )}
               </div>
             </div>
           </div>

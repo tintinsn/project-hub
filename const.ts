@@ -248,5 +248,5 @@ export const technologies: Tool[] = [
   { value: "trello", label: "Trello" },
   { value: "jira", label: "Jira" },
   { value: "chakraui", label: "ChakraUI" },
-
+  { value: "prisma", label: "Prisma" },
 ];

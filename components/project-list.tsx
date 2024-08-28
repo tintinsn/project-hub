@@ -24,7 +24,7 @@ const ProjectList = async () => {
       </div>
 
       {projects?.length === 0 && <NoResults />}
-      <div className="grid max-w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16 ">
+      <div className="grid max-w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16">
         {projects?.map((project) => (
           <Link href={`/project/${project.id}`} key={project.id}>
             <ProjectCard data={project} />

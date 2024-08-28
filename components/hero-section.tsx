@@ -1,10 +1,11 @@
-import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import LinkButton from "./ui/link-button";
+import { PiNavigationArrowFill } from "react-icons/pi";
 
 const HeroSection = () => {
   return (
-    <div className="flex min-h-screen flex-col pt-24 lg:pt-0">
+    <div className="flex flex-col pt-5 lg:pt-0">
       {/* Top Content */}
       <div className="flex flex-grow items-center justify-center">
         <div className="my-5 flex max-w-3xl flex-col items-center space-y-6 text-center 2xl:max-w-5xl">
@@ -20,14 +21,15 @@ const HeroSection = () => {
             build your portfolio. Showcase your skills or get inspired—our
             platform is your development hub.
           </p>
-          <Link
-            href="/create"
-            className="flex items-center justify-center space-x-3 rounded-full bg-[rgb(14,14,14)] px-5 py-3 text-center text-white"
-          >
-            {/* <LuMousePointer2 className="fill-white" /> */}
-            <span className="text-xl">🚀</span>
-            <span>Let&apos;s Share Project</span>
-          </Link>
+          <div className="pb-2">
+            <LinkButton
+              href="/create"
+              label="Let's Share Project"
+              icon={PiNavigationArrowFill}
+              position="center"
+              size="lg"
+            />
+          </div>
         </div>
       </div>
 
@@ -44,6 +46,7 @@ const HeroSection = () => {
             // fill
             className="shado shadow-custom rounded-t-lg"
             style={{ objectFit: "contain", height: "100%" }}
+            priority
           />
         </div>
       </div>

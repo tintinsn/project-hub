@@ -16,7 +16,7 @@ const Input = ({
   label,
   type = "text",
   disabled,
-  required,
+  required = false,
   register,
   errors,
   placeholder,
@@ -25,7 +25,7 @@ const Input = ({
     <>
       <label
         htmlFor={id}
-        className="mb-3 block text-start text-xl font-medium leading-6 text-gray-900"
+        className="mb-1 block text-start text-sm font-medium leading-6 text-gray-900"
       >
         {label}
       </label>
@@ -34,7 +34,7 @@ const Input = ({
           id={id}
           type={type}
           disabled={disabled}
-          {...register(id, { required: true })}
+          {...register(id, { required })}
           className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-start text-sm font-light text-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
           placeholder={placeholder || " "}
         />

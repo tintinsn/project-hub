@@ -25,9 +25,6 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
     [],
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [imageSource, setImageSource] = useState<
-    "current" | "upload" | "project" | "github"
-  >("current");
 
   const router = useRouter();
   const updateModal = useUpdateModal();
@@ -61,16 +58,15 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
     console.log(formData);
     setIsLoading(true);
 
-    let imageUrl = data.imageUrl;
+    let imageUrl = formData.imageUrl;
 
-    switch (imageSource) {
-      case "upload":
-        if (formData.imageFile && formData.imageFile[0]) {
-          imageUrl = await uploadImage(formData.imageFile[0]);
-        }
-        break;
-      case "project":
-        if (formData.projectUrl) {
+    if (formData.imageFile && formData.imageFile[0]) {
+      const file = formData.imageFile[0] as File;
+      imageUrl = await uploadImage(file);
+      console.log(imageUrl);
+    } else if (!imageUrl) {
+      if (formData.projectUrl) {
+        try {
           const response = await axios.post("/api/screenshot", {
             url: formData.projectUrl,
           });
@@ -80,14 +76,15 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
           } else {
             throw new Error("Invalid screenshot URL");
           }
+        } catch (error) {
+          console.error("Error generating screenshot:", error);
+          toast.error("Failed to generate project screenshot");
+          return;
         }
-        break;
-      case "github":
-        if (formData.githubRepoUrl) {
-          const repoName = formData.githubRepoUrl.split("github.com/")[1];
-          imageUrl = `https://opengraph.githubassets.com/1/${repoName}`;
-        }
-        break;
+      } else if (formData.githubRepoUrl) {
+        const repoName = formData.githubRepoUrl?.split("github.com/")[1];
+        imageUrl = `https://opengraph.githubassets.com/1/${repoName}`;
+      }
     }
 
     const updateData = {
@@ -98,8 +95,8 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
       projectUrl: formData.projectUrl,
       githubRepoUrl: formData.githubRepoUrl,
     };
-
     console.log(updateData);
+
     try {
       const response = await axios.put(`/api/projects/${data.id}`, updateData);
       if (response.status === 200) {
@@ -124,29 +121,12 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
   };
 
   const bodyContent = (
-    <div className="grid w-full grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+    <div className="grid w-full grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
       <div className="sm:col-span-6">
-        <label className="mb-1 block text-sm font-medium text-gray-900">
-          Image Source
-        </label>
-        <select
-          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-start text-sm font-light text-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
-          value={imageSource}
-          onChange={(e) =>
-            setImageSource(
-              e.target.value as "current" | "upload" | "project" | "github",
-            )
-          }
-        >
-          <option value="current">Use Current Image</option>
-          <option value="upload">Upload New Image</option>
-          <option value="project">Generate from Project URL</option>
-          <option value="github">Use GitHub Repository Image</option>
-        </select>
+        <Heading title="Update your project" />
       </div>
-      <div
-        className={imageSource === "upload" ? "sm:col-span-3" : "sm:col-span-6"}
-      >
+      
+      <div className="sm:col-span-3">
         <Input
           label="Project Name"
           id="title"
@@ -155,17 +135,15 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
           disabled={isLoading}
         />
       </div>
-      {imageSource === "upload" && (
-        <div className="sm:col-span-3">
-          <InputFile
-            id="imageFile"
-            label="Project Image"
-            register={register}
-            disabled={isLoading}
-            errors={errors}
-          />
-        </div>
-      )}
+      <div className="sm:col-span-3">
+        <InputFile
+          id="imageFile"
+          label="Project Image"
+          register={register}
+          disabled={isLoading}
+          errors={errors}
+        />
+      </div>
 
       <div className="sm:col-span-6">
         <InputTextarea
@@ -179,7 +157,7 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
       <div className="sm:col-span-6">
         <label
           htmlFor="technologies"
-          className="mb-1 block text-start text-sm font-medium leading-6 text-gray-900"
+          className="mb-3 block text-start text-xl font-medium leading-6 text-gray-900"
         >
           Technology Stack
         </label>
@@ -200,7 +178,7 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
       </div>
       <div className="sm:col-span-3">
         <Input
-          label="Gitbub Repository"
+          label="GitHub Repository"
           id="githubRepoUrl"
           register={register}
           errors={errors}

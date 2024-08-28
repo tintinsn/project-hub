@@ -16,7 +16,7 @@ const InputFile = ({
   label,
   type = "file",
   disabled,
-  required,
+  required = false,
   register,
   errors,
 }: InputProps) => {
@@ -24,17 +24,26 @@ const InputFile = ({
     <>
       <label
         htmlFor={id}
-        className="mb-3 block text-start text-xl font-medium leading-6 text-gray-900"
+        className="mb-1 block text-start text-sm font-medium leading-6 text-gray-900"
       >
         {label}
       </label>
-      <input
-        id={id}
-        type={type}
-        {...register(id)}
-        disabled={disabled}
-        className="w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-900 file:me-4 file:border-0 file:bg-gray-900 file:px-4 file:py-3 file:text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
-      />
+      <div className="relative">
+        <input
+          id={id}
+          type={type}
+          {...register(id, { required })}
+          disabled={disabled}
+          // className="w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-900 file:me-4 file:border-0 file:bg-gray-900 file:p-2.5 file:px-4 file:text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
+          className="relative w-full rounded-lg border border-gray-300 bg-white p-2.5 text-start text-sm font-light text-gray-900 file:not-sr-only file:hidden focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 disabled:pointer-events-none disabled:opacity-50"
+        />
+        <label
+          htmlFor={id}
+          className="absolute right-2 top-2 w-fit cursor-pointer rounded-full bg-gray-900 px-3 py-1 text-xs font-light text-white"
+        >
+          Upload Image
+        </label>
+      </div>
       {/* <div className="relative flex items-center justify-between rounded-lg border border-gray-300 p-2.5">
         <span className="text-sm font-light text-gray-900">{label}</span>
         <label className="absolute right-3 cursor-pointer">

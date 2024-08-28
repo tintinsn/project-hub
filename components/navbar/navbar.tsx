@@ -122,7 +122,7 @@ const Navbar = ({ user }: NavbarProps) => {
                 href="/explore"
                 icon={HiOutlineViewGridAdd}
               />
-              <MenuList label="Home" href="/home" icon={GoHome} />
+              <MenuList label="Home" href="/" icon={GoHome} />
               {user && (
                 <MenuList
                   onClick={handleSignOut}

@@ -1,5 +1,3 @@
-"use client";
-
 import axios from "axios";
 
 export async function uploadImage(image: File): Promise<string> {
@@ -13,5 +11,5 @@ export async function uploadImage(image: File): Promise<string> {
     formData,
   );
 
-  return response.data.url;
+  return response.data.secure_url;
 }
