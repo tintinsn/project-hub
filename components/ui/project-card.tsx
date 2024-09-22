@@ -22,6 +22,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               // className="absolute h-full w-full rounded-md bg-transparent object-cover object-top"
+              loading="lazy"
             />
           )}
         </div>

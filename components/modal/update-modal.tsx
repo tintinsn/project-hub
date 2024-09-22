@@ -58,7 +58,6 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
   const onSubmit: SubmitHandler<FieldValues> = async (
     formData: FieldValues,
   ) => {
-    
     setIsLoading(true);
 
     let imageUrl = data.imageUrl;
@@ -99,12 +98,10 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
       githubRepoUrl: formData.githubRepoUrl,
     };
 
-    
     try {
       const response = await axios.put(`/api/projects/${data.id}`, updateData);
       if (response.status === 200) {
         const updatedProject = response.data;
-        
 
         updateModal.onClose();
         router.refresh();

@@ -2,8 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import React from "react";
 import { IconType } from "react-icons";
 
-
-type ButtonVariant = "default" | "outline" | "danger";
+type ButtonVariant = "default" | "outline" | "danger" | "loading";
 type ButtonRounded = "default" | "full";
 type ButtonPosition = "start" | "center" | "end";
 type ButtonSize = "sm" | "lg";
@@ -35,6 +34,7 @@ const Button = ({
   const baseStyles = `flex h-[32px] gap-1 items-center  rounded-full pl-2 pr-3 `;
   const variantStyles: Record<ButtonVariant, string> = {
     default: `border border-black bg-black text-white`,
+    loading: `border border-gray-300 bg-gray-300 text-white`,
     outline: `border border-gray-300 bg-white text-black`,
     danger: `bg-[#E50815] text-white`,
   };
@@ -60,13 +60,13 @@ const Button = ({
       <button
         onClick={onClick}
         disabled={disabled}
-        className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${roundedStyles[rounded]} ${positionStyles[position]} ${widthStyles[width]}`}
+        className={`${baseStyles} ${disabled ? "border border-gray-300 bg-gray-300 text-white" : variantStyles[variant]} ${sizeStyles[size]} ${roundedStyles[rounded]} ${positionStyles[position]} ${widthStyles[width]} `}
       >
         <span
           className={`${GeistSans.className} flex items-center justify-start gap-[6px] px-[6px] font-light`}
         >
           {Icon && <Icon size={16} />}
-          
+
           {label}
         </span>
       </button>
