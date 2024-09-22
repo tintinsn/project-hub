@@ -14,14 +14,15 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
     <div className="group relative m-auto h-full w-full">
       <div className="flex h-full w-full flex-col overflow-hidden rounded-md bg-white p-4 shadow-light-lg-border transition-shadow duration-200 ease-in-out group-hover:shadow-light-md-border">
         {/* Image */}
-        <div className="relative flex h-52">
+        <div className="relative flex aspect-video overflow-hidden rounded-[3px]">
           {data?.imageUrl && (
             <Image
               src={data?.imageUrl}
               alt="Image"
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              // className="absolute h-full w-full rounded-md bg-transparent object-cover object-top"
+              // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              // className="absolute h-full w-full bg-transparent object-cover object-top"
+              className="object-cover"
               loading="lazy"
             />
           )}

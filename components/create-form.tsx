@@ -39,6 +39,10 @@ const CreateForm = ({ user }: CreateFormProps) => {
   const [selectedTechStack, setSelectedTechStack] = useState<SelectedOption[]>(
     [],
   );
+  const [imageSource, setImageSource] = useState<
+    "upload" | "project" | "github"
+  >("project");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -56,50 +60,66 @@ const CreateForm = ({ user }: CreateFormProps) => {
     defaultValues: initialData,
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    
+  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
+    setIsLoading(true);
     let imageUrl = data.imageUrl;
 
-    if (imageUrl && imageUrl[0]) {
-      const file = imageUrl[0] as File;
-      imageUrl = await uploadImage(file);
-    } else if (data.projectUrl) {
-      try {
-        const response = await axios.post("/api/screenshot", {
-          url: data.projectUrl,
-        });
-        const responseUrl = /'(.+)'/.exec(response.data.imageUrl);
-        if (responseUrl && responseUrl[1]) {
-          imageUrl = responseUrl[1];
-        } else {
-          throw new Error("Invalid screenshot URL");
-        }
-      } catch (error) {
-        console.error("Error generating screenshot:", error);
-        toast.error("Failed to generate project screenshot");
-        return;
-      }
-    } else if (data.githubRepoUrl) {
-      const repoName = data.githubRepoUrl?.split("github.com/")[1];
-      imageUrl = `https://opengraph.githubassets.com/1/${repoName}`;
-    }
-
-    const inputData = {
-      ...data,
-      imageUrl,
-      technologies: [...selectedTechStack.map((tech) => tech.value)],
-      userId: user?.id,
-    };
-
-    setIsLoading(true);
     try {
-      const res = axios.post("/api/projects", inputData).then(() => {
+      switch (imageSource) {
+        case "upload":
+          if (data.imageFile && data.imageFile[0]) {
+            imageUrl = await uploadImage(data.imageFile[0]);
+          } else {
+            throw new Error(
+              'Please upload image when you select "Upload New Image" from image source',
+            );
+          }
+          break;
+        case "project":
+          if (data.projectUrl) {
+            const response = await axios.post("/api/screenshot", {
+              url: data.projectUrl,
+            });
+            const responseUrl = /'(.+)'/.exec(response.data.imageUrl);
+            if (responseUrl && responseUrl[1]) {
+              imageUrl = responseUrl[1];
+            } else {
+              throw new Error("Invalid screenshot URL");
+            }
+          } else {
+            throw new Error(
+              'Project URL is required when you select "Generate from Project URL" from image source ',
+            );
+          }
+          break;
+        case "github":
+          if (data.githubRepoUrl) {
+            const repoName = data.githubRepoUrl.split("github.com/")[1];
+            imageUrl = `https://opengraph.githubassets.com/1/${repoName}`;
+          } else {
+            throw new Error(
+              'GitHub repo is required when you select "Use GitHub Repository Image" from image source ',
+            );
+          }
+          break;
+      }
+
+      const inputData = {
+        ...data,
+        imageUrl,
+        technologies: [...selectedTechStack.map((tech) => tech.value)],
+        userId: user?.id,
+      };
+
+      const response = await axios.post("/api/projects", inputData).then(() => {
         toast.success("Create new project successfully!");
         reset();
         router.push("/");
       });
     } catch (error) {
-      toast.error("Someting Went Wrong");
+      toast.error(
+        error instanceof Error ? error.message : "An unexpected error occurred",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -119,6 +139,7 @@ const CreateForm = ({ user }: CreateFormProps) => {
           </div> */}
 
           {/************ Right content - START *************/}
+
           <div className="h-full w-full px-4 pt-10 md:w-full lg:w-1/2 lg:pl-12 lg:pt-0 xl:w-3/4">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid w-full grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -127,7 +148,30 @@ const CreateForm = ({ user }: CreateFormProps) => {
                     Create Project
                   </h1>
                 </div>
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-6">
+                  <label className="mb-1 block text-sm font-medium text-gray-900">
+                    Image Source
+                  </label>
+                  <select
+                    className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-start text-sm font-light text-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    value={imageSource}
+                    onChange={(e) =>
+                      setImageSource(
+                        e.target.value as "upload" | "project" | "github",
+                      )
+                    }
+                  >
+                    {/* <option value="current">Use Current Image</option> */}
+                    <option value="project">Generate from Project URL</option>
+                    <option value="upload">Upload New Image</option>
+                    <option value="github">Use GitHub Repository Image</option>
+                  </select>
+                </div>
+                <div
+                  className={
+                    imageSource === "upload" ? "sm:col-span-3" : "sm:col-span-6"
+                  }
+                >
                   <Input
                     label="Project Name"
                     id="title"
@@ -138,15 +182,17 @@ const CreateForm = ({ user }: CreateFormProps) => {
                     required
                   />
                 </div>
-                <div className="sm:col-span-3">
-                  <InputFile
-                    id="imageUrl"
-                    label="Project Image"
-                    register={register}
-                    disabled={isLoading}
-                    errors={errors}
-                  />
-                </div>
+                {imageSource === "upload" && (
+                  <div className="sm:col-span-3">
+                    <InputFile
+                      id="imageFile"
+                      label="Project Image"
+                      register={register}
+                      disabled={isLoading}
+                      errors={errors}
+                    />
+                  </div>
+                )}
 
                 <div className="sm:col-span-6">
                   <InputTextarea
@@ -194,7 +240,7 @@ const CreateForm = ({ user }: CreateFormProps) => {
               </div>
               <div className="mt-6 flex justify-end">
                 <Button
-                  label="Submit"
+                  label={isLoading ? "Submitting" : "Submit"}
                   disabled={isLoading}
                   size="lg"
                   icon={BsCloudArrowUpFill}

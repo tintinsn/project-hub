@@ -55,62 +55,82 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
     );
   }, [selectedTechStack, setValue]);
 
+  console.log(imageSource);
+
   const onSubmit: SubmitHandler<FieldValues> = async (
     formData: FieldValues,
   ) => {
     setIsLoading(true);
 
     let imageUrl = data.imageUrl;
-
-    switch (imageSource) {
-      case "upload":
-        if (formData.imageFile && formData.imageFile[0]) {
-          imageUrl = await uploadImage(formData.imageFile[0]);
-        }
-        break;
-      case "project":
-        if (formData.projectUrl) {
-          const response = await axios.post("/api/screenshot", {
-            url: formData.projectUrl,
-          });
-          const responseUrl = /'(.+)'/.exec(response.data.imageUrl);
-          if (responseUrl && responseUrl[1]) {
-            imageUrl = responseUrl[1];
-          } else {
-            throw new Error("Invalid screenshot URL");
-          }
-        }
-        break;
-      case "github":
-        if (formData.githubRepoUrl) {
-          const repoName = formData.githubRepoUrl.split("github.com/")[1];
-          imageUrl = `https://opengraph.githubassets.com/1/${repoName}`;
-        }
-        break;
-    }
-
-    const updateData = {
-      title: formData.title,
-      imageUrl,
-      description: formData.description,
-      technologies: formData.technologies,
-      projectUrl: formData.projectUrl,
-      githubRepoUrl: formData.githubRepoUrl,
-    };
+    console.log(imageUrl);
 
     try {
+      switch (imageSource) {
+        case "upload":
+          if (formData.imageFile && formData.imageFile[0]) {
+            imageUrl = await uploadImage(formData.imageFile[0]);
+          } else {
+            throw new Error(
+              'Please upload image when you select "Upload New Image" from image source',
+            );
+          }
+          break;
+        case "project":
+          if (formData.projectUrl) {
+            const response = await axios.post("/api/screenshot", {
+              url: formData.projectUrl,
+            });
+            const responseUrl = /'(.+)'/.exec(response.data.imageUrl);
+            if (responseUrl && responseUrl[1]) {
+              imageUrl = responseUrl[1];
+            } else {
+              throw Error("Invalid screenshot URL");
+            }
+          } else {
+            throw new Error(
+              'Project URL is required when you select "Generate from Project URL" from image source ',
+            );
+          }
+          break;
+        case "github":
+          if (formData.githubRepoUrl) {
+            const repoName = formData.githubRepoUrl.split("github.com/")[1];
+            imageUrl = `https://opengraph.githubassets.com/1/${repoName}`;
+          } else {
+            throw new Error(
+              'GitHub repo is required when you select "Use GitHub Repository Image" from image source ',
+            );
+          }
+          break;
+      }
+
+      console.log(imageUrl);
+
+      const updateData = {
+        title: formData.title,
+        imageUrl,
+        description: formData.description,
+        technologies: formData.technologies,
+        projectUrl: formData.projectUrl,
+        githubRepoUrl: formData.githubRepoUrl,
+      };
+
       const response = await axios.put(`/api/projects/${data.id}`, updateData);
       if (response.status === 200) {
-        const updatedProject = response.data;
+        // const updatedProject = response.data;
+        toast.success("Update project successfully!");
 
         updateModal.onClose();
         router.refresh();
       } else {
-        console.error("Failed to update project");
+        toast.error("Failed to update project");
         setIsLoading(false);
       }
     } catch (error) {
-      console.error("An error occurred while updating the project:", error);
+      toast.error(
+        error instanceof Error ? error.message : "An unexpected error occurred",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -214,7 +234,7 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
         isOpen={updateModal.isOpen}
         onClose={updateModal.onClose}
         title="Update"
-        actionLabel="Update"
+        actionLabel={isLoading? "Updating" : "Update"}
         disabled={isLoading}
         body={bodyContent}
         secondaryActionLabel="Cancel"
