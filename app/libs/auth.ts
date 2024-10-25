@@ -6,6 +6,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import { generateSlug } from "@/utils/generateSlug";
 
 const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -39,7 +40,7 @@ const authOptions: AuthOptions = {
         if (!user || !user.password) {
           throw new Error("Invalid credentials");
         }
-        
+
         const isCorrectPassword = await bcrypt.compare(
           credentials.password,
           user.password,
@@ -53,6 +54,33 @@ const authOptions: AuthOptions = {
       },
     }),
   ],
+  events: {
+    createUser: async ({ user }) => {
+      try {
+        const slug = generateSlug(user.name || "user", user.id);
+
+        await prisma.profile.create({
+          data: {
+            userId: user.id,
+            slug,
+            jobTitle: "Developer",
+            bio: `Hi, I'm ${user.name || "there"}!`,
+            githubLink: "https://github.com/",
+            linkedinLink: "https://www.linkedin.com/",
+            phoneNumber: "",
+            email: "",
+            address: "",
+            technicalSkills: [],
+            tools: [],
+            education: [],
+            experience: [],
+          },
+        });
+      } catch (error) {
+        console.error("Error creating profile after OAuth signup:", error);
+      }
+    },
+  },
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
