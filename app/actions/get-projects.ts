@@ -9,8 +9,6 @@ export const getSession = async () => {
 
 const getProjects = async () => {
   try {
-    // const session = await getSession();
-    // if (!session?.user?.email) return null;
 
     const projects = await prisma.project.findMany({
       include: {

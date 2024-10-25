@@ -1,20 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Heading from "../heading";
 import Modal from "./modal";
 
 import useUpdateModal from "@/app/hooks/useUpdateModal";
+import { uploadImage } from "@/app/libs/cloudinary";
 import { Project } from "@/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { SelectedOption } from "../create-form";
 import Input from "../input";
 import InputFile from "../input-file";
 import InputTextarea from "../input-textarea";
 import MultiSelectTech from "../ui/multi-select";
-import toast from "react-hot-toast";
-import { uploadImage } from "@/app/libs/cloudinary";
 
 interface UpdateModalProps {
   data: Project;
@@ -55,7 +54,7 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
     );
   }, [selectedTechStack, setValue]);
 
-  console.log(imageSource);
+
 
   const onSubmit: SubmitHandler<FieldValues> = async (
     formData: FieldValues,
@@ -63,7 +62,6 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
     setIsLoading(true);
 
     let imageUrl = data.imageUrl;
-    console.log(imageUrl);
 
     try {
       switch (imageSource) {
@@ -105,8 +103,6 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
           break;
       }
 
-      console.log(imageUrl);
-
       const updateData = {
         title: formData.title,
         imageUrl,
@@ -116,9 +112,11 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
         githubRepoUrl: formData.githubRepoUrl,
       };
 
+      
+
       const response = await axios.put(`/api/projects/${data.id}`, updateData);
       if (response.status === 200) {
-        // const updatedProject = response.data;
+  
         toast.success("Update project successfully!");
 
         updateModal.onClose();
@@ -231,10 +229,12 @@ const UpdateModal = ({ data }: UpdateModalProps) => {
     <>
       <Modal
         onSubmit={handleSubmit(onSubmit)}
-        isOpen={updateModal.isOpen}
+        isOpen={
+          updateModal.isOpen && updateModal.currentProject?.id === data.id
+        }
         onClose={updateModal.onClose}
         title="Update"
-        actionLabel={isLoading? "Updating" : "Update"}
+        actionLabel={isLoading ? "Updating" : "Update"}
         disabled={isLoading}
         body={bodyContent}
         secondaryActionLabel="Cancel"

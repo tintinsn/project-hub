@@ -7,7 +7,7 @@ export const getSession = async () => {
   return await getServerSession(authOptions);
 };
 
-const getUser = async () => { 
+const getUser = async () => {
   try {
     const session = await getSession();
 
@@ -16,6 +16,13 @@ const getUser = async () => {
     const currentUser = await prisma.user.findUnique({
       where: {
         email: session.user.email as string,
+      },
+      include: {
+        profile: {
+          select: {
+            slug: true,
+          },
+        },
       },
     });
 

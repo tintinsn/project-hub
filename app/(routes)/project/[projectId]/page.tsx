@@ -7,6 +7,8 @@ import Avatar from "@/components/ui/avatar";
 import Container from "@/components/ui/container";
 import { GeistSans } from "geist/font/sans";
 import Image from "next/image";
+import Link from "next/link";
+import { MdDeleteForever } from "react-icons/md";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { RxGithubLogo } from "react-icons/rx";
 import StackIcon from "tech-stack-icons";
@@ -18,6 +20,7 @@ interface ParamsProps {
 const ProjectPage = async ({ params }: ParamsProps) => {
   const project = await getProject(params.projectId);
   const user = await getUser();
+  const slug = project?.createdBy.profile?.slug;
 
   const owner = project?.createdBy.id === user?.id;
 
@@ -25,7 +28,6 @@ const ProjectPage = async ({ params }: ParamsProps) => {
     return <div>Project not found</div>;
   }
   const repoName = project.githubRepoUrl?.split("github.com/")[1];
-  const ogGithubImage = `https://opengraph.githubassets.com/1/${repoName}`;
 
   return (
     <Container>
@@ -42,10 +44,12 @@ const ProjectPage = async ({ params }: ParamsProps) => {
               quality={100}
               priority
               className="rounded-md"
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=="
             />
           </div>
           {/* *********** Right content - START ************ */}
-          <div className="w-full bg-white p-4 md:w-full lg:w-1/2">
+          <div className="w-full bg-white px-10 py-4 md:w-full lg:w-1/2">
             <div className="flex flex-col gap-5">
               <div className="flex justify-between">
                 <h1 className="text-xl font-semibold text-black lg:text-3xl">
@@ -54,23 +58,38 @@ const ProjectPage = async ({ params }: ParamsProps) => {
                 <div className="flex gap-2">
                   {owner && (
                     <>
-                      <EditButton />
-                      <DeleteButton projectId={params.projectId} />
+                      <EditButton project={project} />
+                      <DeleteButton
+                        itemType="projects"
+                        itemId={params.projectId}
+                        bg="red"
+                        textColor="white"
+                        label="Delete"
+                      />
                     </>
                   )}
                 </div>
               </div>
+
+              {/* Project Owner */}
+
               <div className="flex items-center gap-3">
                 <div className="font-medium">
                   <span>by</span>
-                  <span className="ml-2 cursor-pointer hover:underline">
-                    {project?.createdBy.name}
-                  </span>
+                  <Link href={`/profile/${slug}`}>
+                    <span className="ml-2 cursor-pointer hover:underline">
+                      {project?.createdBy.name}
+                    </span>
+                  </Link>
                 </div>
                 {project.createdBy.image && (
-                  <Avatar size="lg" imageUrl={project.createdBy.image} />
+                  <Link href={`/profile/${slug}`}>
+                    <Avatar size="lg" imageUrl={project.createdBy.image} />
+                  </Link>
                 )}
               </div>
+
+              {/* Project Description */}
               <p className="block max-w-full text-base leading-6 text-[#888]">
                 {project?.description}
               </p>

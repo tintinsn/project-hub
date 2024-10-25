@@ -2,17 +2,22 @@
 
 import useUpdateModal from "@/app/hooks/useUpdateModal";
 import Button from "@/components/ui/button";
+import { Project } from "@/types";
 import { MdEdit } from "react-icons/md";
 
-const EditButton = () => {
+interface EditButtonProps {
+  project: Project;
+}
+
+const EditButton = ({ project }: EditButtonProps) => {
   const updateModal = useUpdateModal();
 
   return (
     <Button
-      onClick={updateModal.onOpen}
+      onClick={() => updateModal.onOpen(project)}
       label="Edit"
       icon={MdEdit}
-      variant="outline"
+      bg="black"
       rounded="full"
     />
   );

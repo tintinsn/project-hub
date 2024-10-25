@@ -27,6 +27,7 @@ const InputAuth = ({
         disabled={disabled}
         {...register(id, { required: true })}
         className={`peer w-full rounded-md border-2 border-opacity-100 bg-white px-4 pb-2 pt-6 text-gray-950 outline-none transition disabled:cursor-not-allowed disabled:bg-opacity-70 ${errors[id] ? "border-red-500" : "border-gray-200"} ${errors[id] ? "focus:border-red-500" : "focus:border-black"}`}
+        placeholder=" "
       />
       <label
         // peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 ---> กรณีที่ไม่ได้คลิกที่ input field

@@ -7,7 +7,6 @@ import LinkButton from "./ui/link-button";
 
 const ProjectList = async () => {
   const projects = await getProjects();
-  
 
   return (
     <div className="flex flex-col space-y-10">
@@ -15,12 +14,6 @@ const ProjectList = async () => {
         <h3 className="text-2xl font-extrabold text-[##1F1F2C] lg:text-4xl">
           Explore Projects
         </h3>
-        <LinkButton
-          href="/create"
-          label="Create"
-          icon={HiFolderPlus}
-          size="lg"
-        />
       </div>
 
       {projects?.length === 0 && <NoResults />}

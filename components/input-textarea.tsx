@@ -33,7 +33,7 @@ const InputTextarea = ({
           disabled={disabled}
           id={id}
           {...register(id, { required })}
-          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-start text-sm font-light text-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-start text-sm font-light text-gray-900 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
           placeholder="Provide a brief overview of your project"
         />
       </div>

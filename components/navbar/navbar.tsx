@@ -1,29 +1,36 @@
 "use client";
+
+import useCreateProjectModal from "@/app/hooks/useCreateProjectModal";
 import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { AiOutlineUser } from "react-icons/ai";
 import { FaHubspot } from "react-icons/fa6";
 import { GoHome } from "react-icons/go";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
+import { MdLogout } from "react-icons/md";
 import Avatar from "../ui/avatar";
+import Button from "../ui/button";
 import Container from "../ui/container";
 import LinkButton from "../ui/link-button";
 import MobileNavButton from "../ui/mobile-nav-button";
 import ToggleThemeButton from "../ui/ToggleThemeButton";
 import MenuList from "./menu-list";
-import { AiOutlineUser } from "react-icons/ai";
-import { MdLogout } from "react-icons/md";
-import { signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
 
 interface NavbarProps {
   user?: User | null;
+  slug: string;
 }
 
-const Navbar = ({ user }: NavbarProps) => {
+const Navbar = ({ user, slug }: NavbarProps) => {
   const [scrolled, setScrolled] = useState(false);
   const toggleNavRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const createProjectModal = useCreateProjectModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +52,13 @@ const Navbar = ({ user }: NavbarProps) => {
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/signin" });
+  };
+  const handleCreateProjectClick = () => {
+    if (!user) {
+      router.push("/signin");
+    } else {
+      createProjectModal.onOpen();
+    }
   };
 
   return (
@@ -71,7 +85,12 @@ const Navbar = ({ user }: NavbarProps) => {
 
           {/* Nav Menu right */}
           <div className="relative flex gap-6">
-            <LinkButton href="/create" label="Create Project" rounded="full" />
+            <Button
+              onClick={handleCreateProjectClick}
+              label="Create Project"
+              rounded="full"
+              bg="black"
+            />
             {user ? (
               <label htmlFor="toggle_nav" className="cursor-pointer">
                 <Avatar size="lg" imageUrl={user?.image} />
@@ -87,7 +106,7 @@ const Navbar = ({ user }: NavbarProps) => {
               {user ? (
                 <MenuList
                   label={user.name || ""}
-                  href="/profile"
+                  href={`/profile/${slug}`}
                   icon={AiOutlineUser}
                 />
               ) : (
@@ -124,11 +143,13 @@ const Navbar = ({ user }: NavbarProps) => {
               />
               <MenuList label="Home" href="/" icon={GoHome} />
               {user && (
-                <MenuList
-                  onClick={handleSignOut}
-                  label="Log out"
-                  icon={MdLogout}
-                />
+                <>
+                  <MenuList
+                    onClick={handleSignOut}
+                    label="Log out"
+                    icon={MdLogout}
+                  />
+                </>
               )}
             </div>
           </div>

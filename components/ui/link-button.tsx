@@ -8,10 +8,11 @@ type ButtonRounded = "default" | "full";
 type ButtonPosition = "start" | "center" | "end";
 type ButtonSize = "sm" | "lg";
 type ButtonWidth = "fit" | "full";
+type IconSize = "sm" | "md" | "lg" | "xl";
 
 interface ButtonProps {
   onClick?: (e: any) => void;
-  label: string;
+  label?: string;
   href: string;
   icon?: IconType;
   variant?: ButtonVariant;
@@ -19,6 +20,7 @@ interface ButtonProps {
   position?: ButtonPosition;
   size?: ButtonSize;
   width?: ButtonWidth;
+  iconSize?: IconSize;
 }
 
 const LinkButton = ({
@@ -31,6 +33,7 @@ const LinkButton = ({
   position = "start",
   size = "sm",
   width = "fit",
+  iconSize = "md",
 }: ButtonProps) => {
   const baseStyles = `flex h-[32px]  gap-1  rounded-full pl-2 pr-3 flex `;
   const variantStyles: Record<ButtonVariant, string> = {
@@ -56,6 +59,12 @@ const LinkButton = ({
     fit: "w-fit",
     full: "w-full",
   };
+  const iconStyles = {
+    sm: 12,
+    md: 16,
+    lg: 20,
+    xl: 24,
+  };
 
   return (
     <>
@@ -67,7 +76,7 @@ const LinkButton = ({
         <span
           className={`${GeistSans.className} flex items-center justify-start gap-[6px] px-[6px] font-light`}
         >
-          {Icon && <Icon size={16} />}
+          {Icon && <Icon size={`${iconStyles[iconSize]}`} />}
           {label}
         </span>
       </Link>

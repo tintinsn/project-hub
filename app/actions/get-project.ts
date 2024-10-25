@@ -8,9 +8,7 @@ export const getSession = async () => {
 
 const getProject = async (projectId: string) => {
   try {
-    // const session = await getSession();
 
-    // if (!session?.user?.email) return null;
 
     const project = await prisma.project.findUnique({
       where: {
@@ -23,6 +21,11 @@ const getProject = async (projectId: string) => {
             name: true,
             email: true,
             image: true,
+            profile: {
+              select: {
+                slug: true,
+              },
+            },
           },
         },
       },

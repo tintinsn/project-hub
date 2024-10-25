@@ -34,9 +34,9 @@ body {
   z-index: -1;
 } */
 
-main {
+/* main {
   height: calc(100vh - 6rem);
-}
+} */
 
 [aria-pressed="true"] path:nth-of-type(1) {
   display: none;

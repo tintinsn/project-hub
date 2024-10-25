@@ -11,9 +11,7 @@ const HeroSection = () => {
         <div className="my-5 flex max-w-3xl flex-col items-center space-y-6 text-center 2xl:max-w-5xl">
           <h1 className="text-6xl font-extrabold leading-tight tracking-tight 2xl:text-8xl 2xl:leading-snug">
             {/* innovative */}
-            Discover, <p className="inline-block text-blue-500">
-              Showcase
-            </p>{" "}
+            Discover, <p className="inline-block text-blue-500">Showcase</p>
             your Projects and Profile
           </h1>
           <p className="text-sm text-gray-600">
@@ -43,7 +41,6 @@ const HeroSection = () => {
             alt="hero"
             width={900}
             height={500}
-            // fill
             className="shado shadow-custom rounded-t-lg"
             style={{ objectFit: "contain", height: "100%" }}
             priority

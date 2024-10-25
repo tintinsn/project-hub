@@ -15,6 +15,17 @@ export async function POST(request: NextRequest) {
       userId,
     } = body;
 
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+    });
+
+    if (!profile) {
+      return NextResponse.json(
+        { error: "User profile not found" },
+        { status: 404 }
+      );
+    }
+
     const newProject = await prisma.project.create({
       data: {
         title,
@@ -24,6 +35,7 @@ export async function POST(request: NextRequest) {
         projectUrl,
         githubRepoUrl,
         userId,
+        profileId: profile.id,
       },
     });
 

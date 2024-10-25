@@ -35,7 +35,7 @@ const InputFile = ({
           {...register(id, { required })}
           disabled={disabled}
           // className="w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-900 file:me-4 file:border-0 file:bg-gray-900 file:p-2.5 file:px-4 file:text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
-          className="relative w-full rounded-lg border border-gray-300 bg-white p-2.5 text-start text-sm font-light text-gray-900 file:not-sr-only file:hidden focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 disabled:pointer-events-none disabled:opacity-50"
+          className="relative w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-start text-sm font-light text-gray-900 file:not-sr-only file:hidden focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 disabled:pointer-events-none disabled:opacity-50"
         />
         <label
           htmlFor={id}
@@ -44,22 +44,7 @@ const InputFile = ({
           Upload Image
         </label>
       </div>
-      {/* <div className="relative flex items-center justify-between rounded-lg border border-gray-300 p-2.5">
-        <span className="text-sm font-light text-gray-900">{label}</span>
-        <label className="absolute right-3 cursor-pointer">
-          <span className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-xs font-light text-white">
-            <MdCloudUpload className="fill-white" />
-            <span className="lg:hidden xl:block">Upload file</span>
-          </span>
-          <input
-            id={id}
-            type={type}
-            className="sr-only"
-            {...register(id)}
-            disabled={disabled}
-          />
-        </label>
-      </div> */}
+
     </>
   );
 };

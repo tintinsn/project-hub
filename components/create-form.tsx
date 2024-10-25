@@ -129,16 +129,6 @@ const CreateForm = ({ user }: CreateFormProps) => {
     <Container>
       <div className="mx-auto max-w-full">
         <div className="mx-auto flex h-full flex-wrap py-5">
-          {/************ Left content - START *************/}
-          {/* <div className="bg w-full px-4 md:w-1/2 lg:w-1/2 xl:w-1/4">
-            <div className="flex flex-col">
-              <div className="">
-                <ProjectCard data={mockupData[0]} />
-              </div>
-            </div>
-          </div> */}
-
-          {/************ Right content - START *************/}
 
           <div className="h-full w-full px-4 pt-10 md:w-full lg:w-1/2 lg:pl-12 lg:pt-0 xl:w-3/4">
             <form onSubmit={handleSubmit(onSubmit)}>

@@ -17,7 +17,9 @@ const SocialAuth = () => {
         icon={FcGoogle}
         label="Google"
         onClick={handleSigninGoogle}
-        variant="outline"
+        bg="none"
+        textColor="black"
+        border="border"
         size="lg"
         position="center"
         width="full"
@@ -26,7 +28,9 @@ const SocialAuth = () => {
         icon={AiFillGithub}
         label="Github"
         onClick={handleSigninGithub}
-        variant="outline"
+        bg="none"
+        textColor="black"
+        border="border"
         size="lg"
         position="center"
         width="full"

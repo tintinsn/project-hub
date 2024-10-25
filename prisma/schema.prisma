@@ -24,7 +24,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   accounts Account[]
-  portfolio Portfolio?
+  profile Profile?
   projects  Project[]
 }
 
@@ -47,24 +47,32 @@ model Account {
   @@unique([provider,providerAccountId])
 }
 
-model Portfolio {
+model Profile {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @db.ObjectId @unique
+  slug String  @unique
+  jobTitle String
   bio String?
   education Json[]
   experience Json[]
   technicalSkills String[]
   tools String[]
-  contactInfo Json?
+  githubLink String?
+  linkedinLink String?
+  phoneNumber String?
+  email String?
+  address String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id])
+  projects Project[] 
 }
 
 model Project {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   userId      String   @db.ObjectId
+  profileId String @db.ObjectId
   title       String
   description String
   technologies String[]
@@ -75,4 +83,5 @@ model Project {
   updatedAt   DateTime @updatedAt
   
   createdBy   User     @relation(fields: [userId], references: [id])
+  profile Profile @relation(fields: [profileId], references: [id])
 }

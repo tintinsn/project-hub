@@ -1,11 +1,9 @@
 import deleteProject from "@/app/actions/delete-project";
 import getProject from "@/app/actions/get-project";
 import updateProject from "@/app/actions/update-project";
-import prisma from "@/app/libs/prismadb";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const projectId = searchParams.get("id");
 
@@ -26,7 +24,7 @@ export async function GET(request: Request) {
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { projectId: string } },
 ) {
   try {

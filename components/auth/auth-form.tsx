@@ -12,10 +12,27 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import InputAuth from "../ui/input-auth";
 
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ErrorInput from "./error-input";
+
 interface AuthFormProps {
   isSignIn: boolean;
   initialValues: { name?: string; email: string; password: string };
 }
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must not exceed 50 characters")
+    .optional(),
+  email: z.string().email("Invalid email address"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 8 characters")
+    .max(100, "Password must not exceed 100 characters"),
+});
 
 const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +44,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: initialValues,
+    resolver: zodResolver(formSchema),
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -39,7 +57,9 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
           router.push("/signin");
         })
         .catch((error) => {
-          toast.error("Someting Went Wrong");
+          toast.error(
+            error.response?.data?.message || "An error occurred during sign up",
+          );
         })
         .finally(() => {
           setIsLoading(false);
@@ -79,13 +99,16 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
           <div className="mt-5 flex flex-col gap-4">
             <p>Or continue with email address</p>
             {!isSignIn && (
-              <InputAuth
-                id="name"
-                label="name"
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-              />
+              <>
+                <InputAuth
+                  id="name"
+                  label="name"
+                  disabled={isLoading}
+                  register={register}
+                  errors={errors}
+                />
+                {errors.name && <ErrorInput error={errors.name.message} />}
+              </>
             )}
             <InputAuth
               id="email"
@@ -94,6 +117,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
               register={register}
               errors={errors}
             />
+            {errors.email && <ErrorInput error={errors.email.message} />}
             <InputAuth
               id="password"
               label="Password"
@@ -102,6 +126,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
               register={register}
               errors={errors}
             />
+            {errors.password && <ErrorInput error={errors.password.message} />}
 
             {isSignIn ? (
               <Button
@@ -109,7 +134,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
                 width="full"
                 size="lg"
                 position="center"
-                variant="danger"
+                bg="red"
                 onClick={handleSubmit(onSubmit)}
               />
             ) : (
@@ -118,7 +143,7 @@ const AuthForm = ({ isSignIn, initialValues }: AuthFormProps) => {
                 width="full"
                 size="lg"
                 position="center"
-                variant="danger"
+                bg="red"
                 onClick={handleSubmit(onSubmit)}
               />
             )}
